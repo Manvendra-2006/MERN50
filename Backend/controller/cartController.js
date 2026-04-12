@@ -41,11 +41,18 @@ export async function getCart(req,resp){
 
 export async function deleteCart(req,resp){
     try{
-        const deletecart = await Cart.findByIdAndDelete(req.params.id)
-        if(!deletecart){
+        const {userId, productId} = req.body
+        const cart = await Cart.findOne({userId})
+        if(!cart){
+            return resp.status(404).json({message:"Cart is not present`"})
+        }
+        const deletecart = cart.items.filter((item)=>item.productId.toString() !== productId.toString())
+        if(deletecart.length === cart.items.length){
             return resp.status(404).json({message:"Cart is not deleted"})
         }
-        return resp.status(200).json({message:"Cart is deleted"})
+        cart.items = deletecart
+        await cart.save()
+        return resp.status(201).json({message:"Cart is deleted"})
     }
     catch(error){
         return resp.status(500).json({message:"Internal Server Error",error})

@@ -18,11 +18,20 @@ export async function AddToProduct(req,resp){
 }
 export async function getProduct(req,resp){
     try{
-        const product = await Product.find()
+        const {search , category} = req.query
+        const filter = {} 
+        if(search){
+            filter.title = {$regex:search,$options:'i'}
+        }
+        if(category){
+            filter.category = {$regex:category,$options:'i'}
+        }
+        const product = await Product.find(filter)
+    
         if(!product){
             return resp.status(404).json({message:"ProductData is not get"})
         }
-        return resp.status(201).json({message:"PrductData is get"})
+        return resp.status(201).json({message:"PrductData is get",product})
     }
     catch(error){
         return resp.status(500).json({message:"Internal Server Error",error})

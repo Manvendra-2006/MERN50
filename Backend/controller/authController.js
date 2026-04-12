@@ -21,7 +21,7 @@ export async function SignUp(req, resp) {
             password: hashpassword
         })
 
-        return resp.status(201).json({ message: "User Signup successfullly", })
+        return resp.status(201).json({ message: "User Signup successfullly",newUser })
     }
     catch (error) {
         return resp.status(500).json({ message: "Internal Server Error", error })
@@ -47,10 +47,16 @@ export async function Login(req, resp) {
             process.env.JWT_SECRET_TOKEN,
             { expiresIn: '7d' }
         )
-        return resp.status(201).json({ message: "Login Successfully", token })
+        const data = {
+            token,
+            id:userExists._id
+        }
+        return resp.status(201).json({ message: "Login Successfully", data })
     }
     catch (error) {
         return resp.status(500).json({ message: "Internal Server Error", error })
     }
 }
+
+
 

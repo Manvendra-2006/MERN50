@@ -3,6 +3,6 @@ import { addToCart, deleteCart, getCart, updateCart } from '../controller/cartCo
 const cartRouter = express.Router()
 cartRouter.get("/:userId",getCart)
 cartRouter.post("/addcart",addToCart)
-cartRouter.delete("/delete/:id",deleteCart)
+cartRouter.delete("/delete",deleteCart)
 cartRouter.put("/update",updateCart)
 export default cartRouter
