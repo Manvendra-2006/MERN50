@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 const CheckOut = () => {
     const userId = localStorage.getItem("userId")
     const [address, setaddress] = useState([])
-    const [select, setselect] = useState('')
+    const [select, setselect] = useState(null)
     async function getAddress() {
         const res = await api.get(`/address/${userId}`)
         console.log(res.data.Address)
@@ -20,8 +20,8 @@ const CheckOut = () => {
             {
                 address && address.map((item) => {
                     return (
-                        <div>
-                            <input type="radio" value={select} onChange={(event) => setselect(event.target.value)} />
+                        <div onClick={()=>setselect(item)}>
+                            <input type="radio" value={select} onChange={() => setselect(item)} />
                             <h1>{item.fullName}</h1>
                             <h1>{item.Mobile}</h1>
                             <h1>{item.Pincode}</h1>
